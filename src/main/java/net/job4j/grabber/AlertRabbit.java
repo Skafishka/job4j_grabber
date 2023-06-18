@@ -4,7 +4,6 @@ import org.quartz.*;
 import org.quartz.impl.StdSchedulerFactory;
 
 import java.io.FileInputStream;
-import java.io.IOException;
 import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -67,12 +66,6 @@ public class AlertRabbit {
             scheduler.start();
             JobDataMap data = new JobDataMap();
             data.put("connection", connection);
-            Properties properties = new Properties();
-            try (InputStream in = AlertRabbit.class.getClassLoader().getResourceAsStream("rabbit.properties")) {
-                properties.load(in);
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
             JobDetail job = newJob(Rabbit.class)
                     .usingJobData(data)
                     .build();
